@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Goutam Kumar — Software Development Manager. Engineering leader at Uniqus. Backend architect. NIT Jamshedpur."/>
+<title>Goutam Kumar · SDM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{
+  font-size:16px;
+  scroll-behavior:smooth;
+  /* FIX: offset scroll targets by nav height so sections aren't hidden under nav */
+  scroll-padding-top:64px;
+}
+body{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  background:#0d1117;
+  color:#e8e4dc;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:#c8f06a;color:#0d1117}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#2a3a2a}
+
+/* ── LOADER ── */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:#0d1117;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .6s ease .2s;
+}
+#loader.done{opacity:0;pointer-events:none}
+.loader-text{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,4rem);
+  font-weight:900;color:#c8f06a;
+  letter-spacing:-0.03em;
+  overflow:hidden;
+}
+.loader-text span{
+  display:inline-block;
+  animation:rise .7s cubic-bezier(.22,1,.36,1) forwards;
+  opacity:0;transform:translateY(100%);
+}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1.5rem,5vw,4rem);
+  background:rgba(13,17,23,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(200,240,106,0.08);
+}
+.nav-logo{
+  font-family:'Space Mono',monospace;
+  font-size:13px;font-weight:700;
+  color:#c8f06a;text-decoration:none;
+  letter-spacing:0.05em;
+  flex-shrink:0;
+}
+/* FIX: nav-center used absolute positioning which clashed with flex items on small screens */
+.nav-center{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:rgba(232,228,220,0.3);letter-spacing:0.15em;
+  text-transform:uppercase;
+  /* center it without absolute */
+  flex:1;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:0 1rem;
+}
+.nav-right{display:flex;align-items:center;gap:1.5rem;flex-shrink:0}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{
+  font-size:11px;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;color:rgba(232,228,220,0.45);
+  text-decoration:none;transition:color .2s;
+  white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{color:#e8e4dc}
+.nav-status{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:#c8f06a;letter-spacing:0.08em;
+  display:flex;align-items:center;gap:6px;
+  white-space:nowrap;
+}
+.pulse-dot{
+  width:6px;height:6px;border-radius:50%;background:#c8f06a;
+  animation:pdot 2s ease infinite;flex-shrink:0;
+}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+@media(max-width:900px){.nav-center{display:none}}
+@media(max-width:680px){.nav-links{display:none}}
+
+/* ── HERO ── */
+#hero{
+  min-height:100svh;
+  padding-top:64px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.hero-bg-block{
+  position:absolute;
+  right:0;top:0;bottom:0;
+  width:42%;
+  background:linear-gradient(135deg,#1a3a2e 0%,#0f2a1f 100%);
+  z-index:0;
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(200,240,106,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,240,106,0.025) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:58% 42%;
+  flex:1;
+}
+@media(max-width:860px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-bg-block{display:none}
+}
+.hero-left{
+  padding:clamp(2.5rem,7vh,6rem) clamp(1.5rem,5vw,5rem) 2.5rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  gap:2rem;
+}
+.hero-right{
+  padding:clamp(2.5rem,7vh,6rem) clamp(1.5rem,4vw,4rem) 2.5rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  gap:2rem;
+}
+@media(max-width:860px){
+  .hero-right{padding-top:1.5rem;padding-bottom:2.5rem}
+}
+
+.hero-kicker{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:#c8f06a;
+  margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-kicker::before{
+  content:'';display:inline-block;
+  width:36px;height:1.5px;background:#c8f06a;flex-shrink:0;
+}
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3.5rem,9vw,8rem);
+  font-weight:900;
+  line-height:0.9;
+  letter-spacing:-0.04em;
+  color:#e8e4dc;
+  word-break:break-word;
+}
+.hero-name .outline{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(232,228,220,0.3);
+}
+.hero-tagline{
+  font-size:clamp(14px,1.6vw,17px);
+  font-weight:300;line-height:1.75;
+  color:rgba(232,228,220,0.55);
+  max-width:460px;
+  margin-top:2rem;
+}
+.hero-tagline strong{color:#e8e4dc;font-weight:500}
+.hero-actions{
+  display:flex;flex-wrap:wrap;gap:12px;
+  margin-top:2rem;
+}
+.btn-lime{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  background:#c8f06a;color:#0d1117;
+  padding:13px 26px;border-radius:4px;
+  text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-lime:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,240,106,.3)}
+.btn-ghost{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  background:transparent;color:rgba(232,228,220,0.6);
+  padding:13px 26px;border-radius:4px;
+  border:1px solid rgba(232,228,220,0.15);
+  text-decoration:none;
+  transition:border-color .2s,color .2s,transform .2s;
+}
+.btn-ghost:hover{border-color:rgba(200,240,106,.5);color:#c8f06a;transform:translateY(-2px)}
+
+/* hero right stats */
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(200,240,106,0.08);
+  border:1px solid rgba(200,240,106,0.08);
+  border-radius:12px;overflow:hidden;
+}
+.stat-box{
+  background:#0d1117;
+  padding:1.75rem 1.5rem;
+  transition:background .25s;
+}
+.stat-box:hover{background:#1a3a2e}
+.stat-v{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:700;color:#c8f06a;
+  line-height:1;display:block;
+}
+.stat-l{
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(232,228,220,0.3);
+  margin-top:8px;display:block;
+}
+.hero-companies{
+  border-top:1px solid rgba(200,240,106,0.1);
+  padding-top:1.5rem;
+}
+.hc-label{
+  font-family:'Space Mono',monospace;font-size:9px;
+  font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(232,228,220,0.25);margin-bottom:.75rem;display:block;
+}
+.hc-list{display:flex;flex-wrap:wrap;gap:8px;}
+.hc-chip{
+  font-size:12px;font-weight:500;
+  color:rgba(232,228,220,0.4);
+  border:1px solid rgba(232,228,220,0.1);
+  padding:5px 13px;border-radius:3px;
+  transition:color .2s,border-color .2s,background .2s;
+  cursor:default;
+}
+.hc-chip.active{color:#0d1117;background:#c8f06a;border-color:#c8f06a;}
+
+/* hero bottom strip */
+.hero-strip{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(200,240,106,0.08);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem clamp(1.5rem,5vw,4rem);
+  flex-wrap:wrap;gap:1rem;
+}
+.hero-social-links{display:flex;gap:2rem;flex-wrap:wrap}
+.hero-social-links a{
+  font-family:'Space Mono',monospace;font-size:10px;
+  font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(232,228,220,0.3);text-decoration:none;
+  transition:color .2s;
+}
+.hero-social-links a:hover{color:#c8f06a}
+.hero-scroll-hint{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(232,228,220,0.2);
+  display:flex;align-items:center;gap:10px;
+}
+.scroll-line{
+  width:40px;height:1px;background:rgba(232,228,220,0.15);
+  animation:sl 2s ease infinite;
+}
+@keyframes sl{0%{width:20px;opacity:.3}50%{width:50px;opacity:.8}100%{width:20px;opacity:.3}}
+
+/* ── TICKER ── */
+.ticker{
+  background:#1a3a2e;
+  border-top:1px solid rgba(200,240,106,0.12);
+  border-bottom:1px solid rgba(200,240,106,0.12);
+  overflow:hidden;padding:.9rem 0;white-space:nowrap;
+}
+.ticker-track{
+  display:inline-flex;
+  animation:ticker-scroll 28s linear infinite;
+}
+.ticker-item{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-style:italic;font-weight:400;
+  color:rgba(200,240,106,0.6);padding:0 2.5rem;
+  border-right:1px solid rgba(200,240,106,0.12);
+}
+@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SECTIONS ── */
+.sec{
+  max-width:1280px;margin:0 auto;
+  padding:clamp(4rem,9vh,8rem) clamp(1.5rem,5vw,4rem);
+  border-bottom:1px solid rgba(200,240,106,0.06);
+}
+.sec-header{
+  display:flex;align-items:baseline;gap:1.5rem;
+  margin-bottom:3.5rem;
+}
+.sec-num{
+  font-family:'Space Mono',monospace;font-size:11px;
+  color:rgba(232,228,220,0.2);letter-spacing:0.1em;
+  white-space:nowrap;
+}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  font-weight:700;color:#e8e4dc;
+  letter-spacing:-0.03em;line-height:1.05;
+}
+.sec-title em{font-style:italic;color:#c8f06a}
+
+/* ── ABOUT ── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;
+  align-items:start;
+}
+@media(max-width:760px){.about-grid{grid-template-columns:1fr;gap:2.5rem}}
+
+.about-statement{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.3rem,2.3vw,1.8rem);
+  font-weight:400;line-height:1.4;
+  color:#e8e4dc;letter-spacing:-0.02em;
+}
+.about-statement em{font-style:italic;color:#c8f06a}
+.about-body{
+  font-size:15px;font-weight:300;line-height:1.85;
+  color:rgba(232,228,220,0.55);margin-top:1.25rem;
+}
+.about-facts{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(200,240,106,0.06);
+  border:1px solid rgba(200,240,106,0.08);
+  border-radius:10px;overflow:hidden;
+}
+.fact{
+  background:#0d1117;padding:1.1rem 1.4rem;
+  transition:background .2s;
+}
+.fact:hover{background:#1a3a2e}
+.fact label{
+  font-family:'Space Mono',monospace;
+  font-size:8px;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(232,228,220,0.25);display:block;margin-bottom:5px;
+}
+.fact span{font-size:13px;color:rgba(232,228,220,0.7);font-weight:400}
+
+/* ── EXPERIENCE ── */
+.exp-item{
+  display:grid;grid-template-columns:220px 1fr;
+  gap:2rem 3.5rem;
+  padding:2.5rem 0;
+  border-top:1px solid rgba(200,240,106,0.06);
+  /* FIX: use padding-left + inner border instead of negative left value */
+  padding-left:3px;
+  border-left:3px solid transparent;
+  transition:border-color .3s;
+}
+.exp-item:last-child{border-bottom:1px solid rgba(200,240,106,0.06)}
+.exp-item:hover{border-color:#c8f06a}
+@media(max-width:640px){.exp-item{grid-template-columns:1fr;gap:.75rem}}
+
+.exp-period{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;letter-spacing:0.06em;
+  color:rgba(232,228,220,0.3);display:block;margin-bottom:6px;
+}
+.exp-co{
+  font-size:14px;font-weight:600;color:#e8e4dc;display:block;margin-bottom:8px;
+}
+.exp-badge{
+  font-family:'Space Mono',monospace;font-size:8px;
+  font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  background:#c8f06a;color:#0d1117;
+  padding:3px 10px;border-radius:2px;display:inline-block;
+}
+.exp-badge.muted{
+  background:rgba(232,228,220,0.08);color:rgba(232,228,220,0.3);
+}
+.exp-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.2rem,2vw,1.75rem);
+  font-weight:700;color:#e8e4dc;
+  line-height:1.15;margin-bottom:.75rem;letter-spacing:-0.02em;
+}
+.exp-desc{
+  font-size:14px;font-weight:300;line-height:1.85;
+  color:rgba(232,228,220,0.5);max-width:560px;
+}
+.exp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.exp-tag{
+  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:0.06em;color:rgba(200,240,106,0.5);
+  border:1px solid rgba(200,240,106,0.15);
+  padding:3px 10px;border-radius:2px;
+}
+
+/* ── SKILLS ── */
+.skills-wrap{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:1px;
+  background:rgba(200,240,106,0.06);
+  border:1px solid rgba(200,240,106,0.08);
+  border-radius:12px;overflow:hidden;
+}
+.sk-tile{
+  background:#0d1117;
+  padding:1.5rem 1.4rem;
+  transition:background .25s;
+  cursor:default;
+  position:relative;overflow:hidden;
+}
+.sk-tile::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:#c8f06a;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+.sk-tile:hover{background:#1a3a2e}
+.sk-tile:hover::after{transform:scaleX(1)}
+.sk-cat{
+  font-family:'Space Mono',monospace;font-size:8px;font-weight:700;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(200,240,106,0.35);display:block;margin-bottom:6px;
+}
+.sk-name{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;font-weight:700;color:#e8e4dc;
+}
+
+/* ── PROJECTS ── */
+.proj-list{display:flex;flex-direction:column}
+.proj-item{
+  display:grid;grid-template-columns:64px 1fr 32px;
+  gap:1.5rem;
+  padding:2rem 0;
+  border-top:1px solid rgba(200,240,106,0.06);
+  text-decoration:none;color:inherit;
+  align-items:center;
+  transition:background .2s;
+  /* FIX: removed hover opacity trick that caused overlapping — use background instead */
+  border-radius:4px;
+  padding-left:8px;padding-right:8px;
+  margin-left:-8px;margin-right:-8px;
+}
+.proj-item:last-child{border-bottom:1px solid rgba(200,240,106,0.06)}
+.proj-item:hover{background:rgba(200,240,106,0.04)}
+.proj-item.no-link{cursor:default}
+
+.proj-idx{
+  font-family:'Space Mono',monospace;font-size:11px;
+  font-weight:700;color:rgba(200,240,106,0.3);
+  letter-spacing:0.08em;text-align:right;
+}
+.proj-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.05rem,1.8vw,1.4rem);
+  font-weight:700;color:#e8e4dc;
+  letter-spacing:-0.02em;line-height:1.15;
+  margin-bottom:4px;
+}
+.proj-sub{
+  font-family:'Space Mono',monospace;font-size:10px;
+  font-weight:700;letter-spacing:0.06em;
+  color:rgba(200,240,106,0.4);text-transform:uppercase;
+}
+.proj-arrow{
+  font-size:1.1rem;color:rgba(232,228,220,0.2);
+  transition:transform .3s,color .25s;
+  text-align:right;
+}
+.proj-item:hover .proj-arrow{
+  transform:translate(4px,-4px);
+  color:#c8f06a;
+}
+
+/* ── CONTACT ── */
+#contact{
+  background:#1a3a2e;
+  border-top:1px solid rgba(200,240,106,0.1);
+}
+.contact-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  padding:clamp(4rem,9vh,8rem) clamp(1.5rem,5vw,4rem);
+  gap:5rem;
+  align-items:start;
+}
+@media(max-width:760px){
+  .contact-inner{grid-template-columns:1fr;gap:3rem}
+}
+.contact-big{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:900;line-height:0.9;
+  letter-spacing:-0.04em;color:#e8e4dc;
+}
+.contact-big em{font-style:italic;color:#c8f06a}
+.contact-sub{
+  font-size:15px;font-weight:300;line-height:1.75;
+  color:rgba(232,228,220,0.45);margin-top:1.5rem;max-width:380px;
+}
+.btn-lime-solid{
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  background:#c8f06a;color:#0d1117;
+  padding:14px 30px;border-radius:4px;
+  text-decoration:none;margin-top:2rem;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-lime-solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,240,106,.2)}
+
+.c-list{display:flex;flex-direction:column}
+.c-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  padding:1.1rem 0;border-bottom:1px solid rgba(200,240,106,0.08);
+  flex-wrap:wrap;
+}
+.c-row:first-child{border-top:1px solid rgba(200,240,106,0.08)}
+.c-k{
+  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,240,106,0.3);
+  flex-shrink:0;
+}
+.c-v,.c-v a{
+  font-size:13px;color:rgba(232,228,220,0.6);
+  text-decoration:none;transition:color .2s;word-break:break-all;
+}
+.c-v a:hover{color:#c8f06a}
+
+/* ── FOOTER ── */
+footer{
+  background:#0d1117;
+  border-top:1px solid rgba(200,240,106,0.06);
+  padding:1.5rem clamp(1.5rem,5vw,4rem) 3rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:rgba(232,228,220,0.2);letter-spacing:0.08em;
+}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-links a{
+  font-family:'Space Mono',monospace;font-size:9px;
+  font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(232,228,220,0.25);text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:#c8f06a}
+
+/* ── REVEAL ── */
+/* FIX: start visible, animate in — prevents "stuck invisible" on slow connections */
+.r{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .7s cubic-bezier(.22,1,.36,1),
+             transform .7s cubic-bezier(.22,1,.36,1);
+}
+.r.on{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+/* fallback: if JS fails, show everything */
+.no-js .r{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">
+    <span style="animation-delay:.05s">G</span><span style="animation-delay:.1s">o</span><span style="animation-delay:.15s">u</span><span style="animation-delay:.2s">t</span><span style="animation-delay:.25s">a</span><span style="animation-delay:.3s">m</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">GK.</a>
+  <div class="nav-center">Software Development Manager · Uniqus</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Stack</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-status"><div class="pulse-dot"></div>Available</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-block"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div>
+        <div class="hero-kicker r">Software Development Manager · Uniqus</div>
+        <h1 class="hero-name r d1">
+          Goutam
+          <span class="outline">Kumar.</span>
+        </h1>
+        <p class="hero-tagline r d2">
+          <strong>Engineering leader.</strong> Backend architect.
+          Six years building systems at Oracle, Qualcomm,
+          Amazon, BYJU'S and now Uniqus — from code
+          to architecture to people leadership.
+        </p>
+      </div>
+      <div class="hero-actions r d3">
+        <a class="btn-lime" href="#contact">Let's talk ↗</a>
+        <a class="btn-ghost" href="https://goutamkumar1.github.io/Goutam_Kumar.pdf" target="_blank" rel="noopener">Download CV</a>
+      </div>
+    </div>
+
+    <div class="hero-right r d2">
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-v">6+</span>
+          <span class="stat-l">Years Exp.</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-v">5</span>
+          <span class="stat-l">Companies</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-v">8.8</span>
+          <span class="stat-l">NIT CGPA</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-v">CSE</span>
+          <span class="stat-l">NIT JSR</span>
+        </div>
+      </div>
+      <div class="hero-companies">
+        <span class="hc-label">Career journey</span>
+        <div class="hc-list">
+          <span class="hc-chip active">Uniqus</span>
+          <span class="hc-chip">BYJU'S</span>
+          <span class="hc-chip">Amazon</span>
+          <span class="hc-chip">Qualcomm</span>
+          <span class="hc-chip">Oracle</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <div class="hero-social-links">
+      <a href="https://www.linkedin.com/in/gautam26/" target="_blank" rel="noopener">↗ LinkedIn</a>
+      <a href="https://github.com/goutamkumar1" target="_blank" rel="noopener">↗ GitHub</a>
+      <a href="mailto:goutamkumar2607@gmail.com">↗ Email</a>
+    </div>
+    <div class="hero-scroll-hint"><div class="scroll-line"></div>Scroll to explore</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Java Microservices ·</span>
+    <span class="ticker-item">System Design ·</span>
+    <span class="ticker-item">Engineering Leadership ·</span>
+    <span class="ticker-item">Spring Boot ·</span>
+    <span class="ticker-item">AWS Cloud ·</span>
+    <span class="ticker-item">Backend Architecture ·</span>
+    <span class="ticker-item">Team Building ·</span>
+    <span class="ticker-item">MongoDB ·</span>
+    <span class="ticker-item">Java Microservices ·</span>
+    <span class="ticker-item">System Design ·</span>
+    <span class="ticker-item">Engineering Leadership ·</span>
+    <span class="ticker-item">Spring Boot ·</span>
+    <span class="ticker-item">AWS Cloud ·</span>
+    <span class="ticker-item">Backend Architecture ·</span>
+    <span class="ticker-item">Team Building ·</span>
+    <span class="ticker-item">MongoDB ·</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sec-header r">
+    <span class="sec-num">01 —</span>
+    <h2 class="sec-title">About <em>me</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="r">
+      <p class="about-statement">
+        I build backend systems that
+        <em>handle millions</em> —
+        and lead the engineers
+        who build them.
+      </p>
+      <p class="about-body">
+        My career started with enterprise applications at Oracle, then embedded systems at Qualcomm
+        where I worked on software inside next-generation mobile chipsets. A brief stint at Amazon as SDE-2
+        gave me exposure to distributed systems at a scale most engineers never encounter. At BYJU'S I led
+        backend microservices serving millions of learners — saving 70% infra costs and onboarding ~3K tutors.
+        Today at Uniqus, Mumbai, I lead four products as SDM and pioneer AI adoption using Claude
+        across the engineering org.
+      </p>
+    </div>
+    <div class="about-facts r d2">
+      <div class="fact"><label>Current Role</label><span>Software Development Manager</span></div>
+      <div class="fact"><label>Company</label><span>Uniqus · Mumbai · Apr 2026 – Present</span></div>
+      <div class="fact"><label>Education</label><span>B.Tech CSE — NIT Jamshedpur</span></div>
+      <div class="fact"><label>GPA</label><span>8.80 / 10</span></div>
+      <div class="fact"><label>Speciality</label><span>Backend · Microservices · System Design</span></div>
+      <div class="fact"><label>Awards</label><span>Star Award &amp; Best Performer — Uniqus &amp; Qualcomm</span></div>
+      <div class="fact"><label>Email</label><span>goutamkumar2607@gmail.com</span></div>
+      <div class="fact"><label>Phone</label><span>(+91) 9693190466</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec-header r">
+    <span class="sec-num">02 —</span>
+    <h2 class="sec-title">Where I've <em>worked</em></h2>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Apr 2026 — Present</span>
+      <span class="exp-co">Uniqus · Mumbai</span>
+      <span class="exp-badge">Current</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">Software Development Manager</h3>
+      <p class="exp-desc">Leading four products simultaneously — Standalone, Consolidation, FSCP, and Annual Report Builder. End-to-end ownership of full delivery lifecycle: requirement gathering, architecture design, code reviews, release planning, stakeholder management, and team management. Pioneered AI adoption using Claude across the engineering org — integrating AI into product features, accelerating development via AI-assisted code reviews, and automating repetitive workflows to boost team productivity. Star Award recipient and Best Performer from Engineering.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Team Leadership</span><span class="exp-tag">Architecture</span>
+        <span class="exp-tag">Stakeholder Management</span><span class="exp-tag">Release Planning</span>
+        <span class="exp-tag">AI / Claude</span><span class="exp-tag">Hiring</span>
+        <span class="exp-tag">4 Products</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Nov 2024 — Mar 2026</span>
+      <span class="exp-co">Uniqus · Mumbai</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">SDE-3</h3>
+      <p class="exp-desc">Revamped the entire Reporting Universe standalone product end-to-end as senior individual contributor. Delivered critical platform features: authentication &amp; authorisation optimisation, Dynamic Linking Refresh optimisation, Add/Delete row &amp; column, round-off, flip sign, multiple linking, and SEBI LODR compliance — contributing significantly to overall platform stability, scale, and robustness.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Java</span><span class="exp-tag">Spring Boot</span>
+        <span class="exp-tag">Microservices</span><span class="exp-tag">AWS</span>
+        <span class="exp-tag">Auth &amp; Authz</span><span class="exp-tag">SEBI LODR</span>
+        <span class="exp-tag">Dynamic Linking</span><span class="exp-tag">MongoDB</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Sep 2022 — Nov 2024</span>
+      <span class="exp-co">BYJU'S · Bangalore</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">Member of Technical Staff 2</h3>
+      <p class="exp-desc">Contributed to architecture of the Tutor Tech horizontal platform (multiple microservices replacing business-specific monoliths). Built key modules of the Batching service (sub-batching, user subscriptions) and Scheduling service (timetable, classroom creation). Delivered Vector Clock for 2-way sync, Subject Sequence load balancer, and Batch shuffling — reducing tutor requirements by 30%. Infra cost saved by 70%; ~190K paid students, ~1M free students, ~3K tutors onboarded. Team Lead of TTH.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Spring Boot</span><span class="exp-tag">Spring Batch</span>
+        <span class="exp-tag">MongoDB</span><span class="exp-tag">REST APIs</span>
+        <span class="exp-tag">Resilience4j</span><span class="exp-tag">Microservices</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Sep 2022 · 2 weeks</span>
+      <span class="exp-co">Amazon</span>
+      <span class="exp-badge muted">Brief</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">SDE-2</h3>
+      <p class="exp-desc">Joined Amazon as SDE-2, gaining early exposure to Amazon's engineering practices, internal tooling, and the operational rigour of large-scale distributed systems, before transitioning to BYJU'S.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Java</span><span class="exp-tag">Distributed Systems</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Mar 2020 — Sep 2022</span>
+      <span class="exp-co">Qualcomm · Hyderabad</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">Software Engineer</h3>
+      <p class="exp-desc">Developed features for 10 modem components to enable 5G in second port for automotive and cellular chipsets. Resolved record number of bugs in owned chipsets and built automation suites to verify combined builds of 10 modem components. Best Performer Award for two consecutive cycles.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">C++</span><span class="exp-tag">Embedded Systems</span>
+        <span class="exp-tag">5G</span><span class="exp-tag">Modem Software</span>
+        <span class="exp-tag">Automation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item r">
+    <div class="exp-left">
+      <span class="exp-period">Jun 2019 — Mar 2020</span>
+      <span class="exp-co">Oracle · Hyderabad</span>
+    </div>
+    <div class="exp-right">
+      <h3 class="exp-title">Applications Developer 1</h3>
+      <p class="exp-desc">Worked on feature requests and bugs for Primavera P6 — supporting 3 DB variants: Standalone (SQLite), Oracle SQL Developer, and MS SQL Server (Cloud Connect). First exposure to enterprise-scale Java and SQL-based stacks.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">Java</span><span class="exp-tag">Oracle SQL</span>
+        <span class="exp-tag">MS SQL Server</span><span class="exp-tag">Primavera P6</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="sec" id="skills">
+  <div class="sec-header r">
+    <span class="sec-num">03 —</span>
+    <h2 class="sec-title">My <em>stack</em></h2>
+  </div>
+  <div class="skills-wrap r d1">
+    <div class="sk-tile"><span class="sk-cat">Language</span><span class="sk-name">Java</span></div>
+    <div class="sk-tile"><span class="sk-cat">Language</span><span class="sk-name">C++</span></div>
+    <div class="sk-tile"><span class="sk-cat">Language</span><span class="sk-name">Python</span></div>
+    <div class="sk-tile"><span class="sk-cat">Language</span><span class="sk-name">C</span></div>
+    <div class="sk-tile"><span class="sk-cat">Framework</span><span class="sk-name">Spring Boot</span></div>
+    <div class="sk-tile"><span class="sk-cat">Framework</span><span class="sk-name">Spring Batch</span></div>
+    <div class="sk-tile"><span class="sk-cat">Framework</span><span class="sk-name">Resilience4j</span></div>
+    <div class="sk-tile"><span class="sk-cat">Architecture</span><span class="sk-name">Microservices</span></div>
+    <div class="sk-tile"><span class="sk-cat">Architecture</span><span class="sk-name">System Design</span></div>
+    <div class="sk-tile"><span class="sk-cat">Cloud</span><span class="sk-name">AWS</span></div>
+    <div class="sk-tile"><span class="sk-cat">Database</span><span class="sk-name">MongoDB</span></div>
+    <div class="sk-tile"><span class="sk-cat">Database</span><span class="sk-name">PostgreSQL</span></div>
+    <div class="sk-tile"><span class="sk-cat">Database</span><span class="sk-name">MySQL</span></div>
+    <div class="sk-tile"><span class="sk-cat">AI</span><span class="sk-name">Claude / AI</span></div>
+    <div class="sk-tile"><span class="sk-cat">Leadership</span><span class="sk-name">Eng. Management</span></div>
+    <div class="sk-tile"><span class="sk-cat">Leadership</span><span class="sk-name">Roadmap &amp; Hiring</span></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="r">
+      <div class="contact-big">Let's<br><em>connect.</em></div>
+      <p class="contact-sub">Hiring, collaborating on a hard problem, or just want to talk systems design — my inbox is always open.</p>
+      <a class="btn-lime-solid" href="mailto:goutamkumar2607@gmail.com">Send a message ↗</a>
+    </div>
+    <div class="c-list r d2">
+      <div class="c-row">
+        <span class="c-k">Email</span>
+        <span class="c-v"><a href="mailto:goutamkumar2607@gmail.com">goutamkumar2607@gmail.com</a></span>
+      </div>
+      <div class="c-row">
+        <span class="c-k">Phone</span>
+        <span class="c-v">(+91) 9693190466</span>
+      </div>
+      <div class="c-row">
+        <span class="c-k">LinkedIn</span>
+        <span class="c-v"><a href="https://www.linkedin.com/in/gautam26/" target="_blank" rel="noopener">linkedin.com/in/gautam26</a></span>
+      </div>
+      <div class="c-row">
+        <span class="c-k">GitHub</span>
+        <span class="c-v"><a href="https://github.com/goutamkumar1" target="_blank" rel="noopener">github.com/goutamkumar1</a></span>
+      </div>
+      <div class="c-row">
+        <span class="c-k">Resume</span>
+        <span class="c-v"><a href="https://goutamkumar1.github.io/Goutam_Kumar.pdf" target="_blank" rel="noopener">Download PDF ↗</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2026 GOUTAM KUMAR · SOFTWARE DEVELOPMENT MANAGER</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/gautam26/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/goutamkumar1" target="_blank" rel="noopener">GitHub</a>
+    <a href="mailto:goutamkumar2607@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+// loader
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 900);
+});
+
+// FIX: fallback — reveal all elements after 2s in case IntersectionObserver is slow
+const revealAll = setTimeout(() => {
+  document.querySelectorAll('.r').forEach(el => el.classList.add('on'));
+}, 2000);
+
+// reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+// FIX: smooth scroll with offset for fixed nav — intercept all internal anchor clicks
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    const navHeight = 64;
+    const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  });
+});
+
+// active nav highlight
+const secs = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+function updateNav() {
+  let current = '';
+  secs.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 90) current = s.id;
+  });
+  navAs.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+</script>
+</body>
+</html>
